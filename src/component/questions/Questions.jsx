@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import "./Questions.css";
 
 const TIMEVALUE = 180;
@@ -22,11 +22,17 @@ const Questions = () => {
 
 	const fetchQuestions = async () => {
 		try {
-			const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/quiz`);
+			const response = await axios.get(
+				`${process.env.REACT_APP_BASE_URL}/quiz`
+			);
 			console.log(response.data);
 			setQuestions(response.data);
 		} catch (error) {
-			console.error(error);
+			if (error instanceof AxiosError) {
+				alert(error?.data?.message ?? error.message);
+			} else {
+				alert(error?.message);
+			}
 		}
 	};
 
@@ -72,12 +78,12 @@ const Questions = () => {
 		);
 		navigate("/result", { state: response.data });
 		setAnswers([]);
-		localStorage.removeItem("user_id")
+		localStorage.removeItem("user_id");
 	};
 
 	const onComplete = useCallback(() => {
 		const data = [...answers];
-		console.log(answers)
+		console.log(answers);
 		debugger;
 		if (selectedOption !== null) {
 			data.push({
@@ -86,7 +92,7 @@ const Questions = () => {
 			});
 		}
 		submitResult(data);
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedOption, answers]);
 
 	const [counter, setCounter] = useState(TIMEVALUE);
@@ -135,16 +141,18 @@ const Questions = () => {
 							})}
 						</form>
 					</div>
-
-					<div className="question_buttons">
-						<button
-							onClick={handleNext}
-							disabled={questionIndex === questions.length - 1}
-						>
-							Next
-						</button>
-						<button onClick={handleSubmit}>Submit</button>
-					</div>
+					{questions.length - 1 === questionIndex ? (
+						<button className="submit-button" onClick={handleSubmit}>Submit</button>
+					) : (
+						<div className="submit-button">
+							<button
+								onClick={handleNext}
+								disabled={questionIndex === questions.length - 1}
+							>
+								Next
+							</button>
+						</div>
+					)}
 				</>
 			)}
 		</div>
