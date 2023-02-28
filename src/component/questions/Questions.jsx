@@ -144,8 +144,9 @@ const Questions = () => {
 					{questions.length - 1 === questionIndex ? (
 						<button className="submit-button" onClick={handleSubmit}>Submit</button>
 					) : (
-						<div className="submit-button">
+						<div>
 							<button
+							 className="submit-button"
 								onClick={handleNext}
 								disabled={questionIndex === questions.length - 1}
 							>
