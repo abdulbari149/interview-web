@@ -1,0 +1,33 @@
+/* Style for the container div */
+div {
+  margin: 20px;
+  padding: 10px;
+  background-color: white;
+  color: #0077ff;
+  border-radius: 5px;
+}
+
+/* Style for the question text */
+p {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* Style for the radio button inputs */
+input[type="radio"] {
+  margin-right: 5px;
+  vertical-align: middle;
+}
+
+/* Style for the radio button labels */
+label {
+  font-size: 16px;
+  vertical-align: middle;
+}
+
+/* Style for the selected radio button */
+input[type="radio"]:checked + label {
+  font-weight: bold;
+  color: #0077ff;
+}
