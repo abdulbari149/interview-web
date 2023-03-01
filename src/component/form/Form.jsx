@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -17,6 +17,8 @@ const Form = () => {
 		} else {
 			setNameError("");
 		}
+
+
 		if (!cnic) {
 			setCnicError("Please enter your CNIC");
 			return;
@@ -32,12 +34,16 @@ const Form = () => {
 			console.log(response.data);
 			if (response.status === 201) {
 				localStorage.setItem("user_id", response.data.id.toString());
-				navigate("/start");
+				navigate("/start", { state: { ...response.data } });
 			} else {
 				throw new Error(response.data?.message ?? '');
 			}
 		} catch (error) {
-			console.error(error);
+			if (error instanceof AxiosError) {
+				alert(error?.response?.data?.message ?? error.message);
+			} else {
+				alert(error?.message);
+			}
 		}
 	};
 	return (

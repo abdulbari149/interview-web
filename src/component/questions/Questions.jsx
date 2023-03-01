@@ -28,6 +28,7 @@ const Questions = () => {
 			console.log(response.data);
 			setQuestions(response.data);
 		} catch (error) {
+			console.log(error)
 			if (error instanceof AxiosError) {
 				alert(error?.data?.message ?? error.message);
 			} else {
